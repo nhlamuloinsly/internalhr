@@ -26,6 +26,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+       //     ->title('Insly Hr System')  // Here is where you set the title!
             ->login()
             ->colors([
                 'primary' => Color::Amber,
