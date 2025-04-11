@@ -15,4 +15,9 @@ class PerformanceReview extends Model
         'score',
         'comments',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

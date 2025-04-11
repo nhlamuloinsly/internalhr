@@ -10,4 +10,9 @@ class JobTitle extends Model
     use HasFactory;
 
     protected $fillable = ['title'];
+
+    public function employeeProfiles()
+    {
+        return $this->hasMany(EmployeeProfile::class);
+    }
 }

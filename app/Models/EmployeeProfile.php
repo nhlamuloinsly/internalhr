@@ -18,4 +18,21 @@ class EmployeeProfile extends Model
         'address',
         'photo',
     ];
+
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
+
+    public function jobTitle()
+    {
+        return $this->belongsTo(JobTitle::class);
+    }
+
 }

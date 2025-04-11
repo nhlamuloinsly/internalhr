@@ -14,4 +14,15 @@ class BenefitEnrollment extends Model
         'benefit_id',
         'enrolled_on',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function benefit()
+    {
+        return $this->belongsTo(Benefit::class);
+    }
+    
 }

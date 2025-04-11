@@ -14,4 +14,9 @@ class Benefit extends Model
         'description',
         'provider',
     ];
+    public function enrollments()
+    {
+        return $this->hasMany(BenefitEnrollment::class);
+    }
+
 }

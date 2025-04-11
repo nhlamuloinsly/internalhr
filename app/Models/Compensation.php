@@ -15,4 +15,9 @@ class Compensation extends Model
         'currency',
         'pay_date',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
