@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Models\User;
 use App\Filament\Resources\PerformanceReviewResource\Pages;
 use App\Filament\Resources\PerformanceReviewResource\RelationManagers;
 use App\Models\PerformanceReview;
@@ -23,12 +24,12 @@ class PerformanceReviewResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('user_id')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\Select::make('user_id')
+                    ->label('User')
+                    ->options(User::all()->pluck('name', 'id'))
+                    ->required(),
                 Forms\Components\Textarea::make('comments')
-                    ->required()
-                    ->columnSpanFull(),
+                    ->required(),
                 Forms\Components\TextInput::make('rating')
                     ->required()
                     ->numeric(),
@@ -41,11 +42,14 @@ class PerformanceReviewResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user_id')
+                Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('rating')
                     ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('comments')
+                    ->limit(50)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('review_date')
                     ->date()

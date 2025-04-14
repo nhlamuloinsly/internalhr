@@ -23,13 +23,13 @@ class AttendanceResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('user_id')
+                Forms\Components\TextInput::make('user.name')
                     ->required()
                     ->numeric(),
                 Forms\Components\DatePicker::make('date')
                     ->required(),
-                Forms\Components\TextInput::make('check_in'),
-                Forms\Components\TextInput::make('check_out'),
+                Forms\Components\TimePicker::make('check_in'),
+                Forms\Components\TimePicker::make('check_out'),
             ]);
     }
 
@@ -37,7 +37,7 @@ class AttendanceResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user_id')
+                Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('date')

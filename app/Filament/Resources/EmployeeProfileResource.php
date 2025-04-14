@@ -23,7 +23,7 @@ class EmployeeProfileResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('user_id')
+                Forms\Components\TextInput::make('name')
                     ->required()
                     ->numeric(),
                 Forms\Components\TextInput::make('department_id')
@@ -42,13 +42,13 @@ class EmployeeProfileResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user_id')
+                Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('department_id')
+                Tables\Columns\TextColumn::make('department.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('job_title_id')
+                Tables\Columns\TextColumn::make('jobtitle.title')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('hire_date')
