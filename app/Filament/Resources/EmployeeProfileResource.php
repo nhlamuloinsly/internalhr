@@ -4,7 +4,9 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\EmployeeProfileResource\Pages;
 use App\Filament\Resources\EmployeeProfileResource\RelationManagers;
+use App\Models\Department;
 use App\Models\EmployeeProfile;
+use App\Models\JobTitle;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -26,15 +28,24 @@ class EmployeeProfileResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('department_id')
-                    ->numeric(),
-                Forms\Components\TextInput::make('job_title_id')
-                    ->numeric(),
+                Forms\Components\Select::make('department_id')
+                    ->label('Department')
+                    ->options(Department::all()->pluck('name', 'id')) // Fetch department names and IDs
+                    ->required(),
+                Forms\Components\Select::make('job_title_id')
+                ->label('Job Title')
+                ->options(JobTitle::all()->pluck('title', 'id')) // Fetch department names and IDs
+                ->required(),
+
                 Forms\Components\DatePicker::make('hire_date'),
                 Forms\Components\TextInput::make('phone')
                     ->tel(),
                 Forms\Components\TextInput::make('address'),
-                Forms\Components\TextInput::make('photo'),
+                Forms\Components\FileUpload::make('photo')
+                    ->label('Upload Photo')
+                    ->acceptedFileTypes(['image/jpeg', 'image/png'])
+                    ->maxSize(2048) // 2MB
+                    ->preserveFilenames(),
             ]);
     }
 
