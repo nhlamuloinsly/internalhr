@@ -143,4 +143,22 @@ class LeaveRequestResource extends Resource
             'edit' => Pages\EditLeaveRequest::route('/{record}/edit'),
         ];
     }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            return $query;
+        }
+
+        if ($user->role === 'hr') {
+            // HR can see all leave requests
+            return $query;
+        }
+
+        // Employees can only see their own leave requests
+        return $query->where('user_id', $user->id);
+    }
 }

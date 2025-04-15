@@ -60,6 +60,7 @@ class EmployeeProfileResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('jobtitle.title')
+                ->label('Job Title')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('hire_date')

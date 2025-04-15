@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CompensationResource\Pages;
-use App\Filament\Resources\CompensationResource\RelationManagers;
-use App\Models\Compensation;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use App\Models\User;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\Compensation;
+use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\CompensationResource\Pages;
+use App\Filament\Resources\CompensationResource\RelationManagers;
 
 class CompensationResource extends Resource
 {
@@ -23,9 +24,11 @@ class CompensationResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('user_id')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\Select::make('user')
+                ->options(User::all()->pluck('name', 'id'))
+                    ->required(),
+
+
                 Forms\Components\TextInput::make('amount')
                     ->required()
                     ->numeric(),
@@ -43,6 +46,11 @@ class CompensationResource extends Resource
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
                     ->sortable(),
+            Tables\Columns\TextColumn::make('user.role')
+            ->label('Role')
+                ->numeric()
+                ->sortable(),
+
                 Tables\Columns\TextColumn::make('amount')
                     ->numeric()
                     ->sortable(),
@@ -87,5 +95,23 @@ class CompensationResource extends Resource
             'create' => Pages\CreateCompensation::route('/create'),
             'edit' => Pages\EditCompensation::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            return $query;
+        }
+
+        if ($user->role === 'hr') {
+            // HR can see all compensation records
+            return $query;
+        }
+
+        // Employees can only see their own compensation records
+        return $query->where('user_id', $user->id);
     }
 }
