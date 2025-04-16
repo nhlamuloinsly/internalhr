@@ -6,16 +6,27 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Fortify\TwoFactorAuthenticatable;
+use Laravel\Jetstream\HasProfilePhoto;
+use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
+
 
 class User extends Authenticatable
 {
+    use HasApiTokens;
+    use HasRoles;
+
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory;
+    use HasProfilePhoto;
+    use Notifiable;
+    use TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var list<string>
+     * @var array<int, string>
      */
     protected $fillable = [
         'name',
@@ -26,11 +37,22 @@ class User extends Authenticatable
     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var list<string>
+     * @var array<int, string>
      */
     protected $hidden = [
         'password',
         'remember_token',
+        'two_factor_recovery_codes',
+        'two_factor_secret',
+    ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array<int, string>
+     */
+    protected $appends = [
+        'profile_photo_url',
     ];
 
     /**
@@ -45,36 +67,4 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
-    public function profile()
-    {
-        return $this->hasOne(EmployeeProfile::class);
-    }
-
-    public function compensations()
-    {
-        return $this->hasMany(Compensation::class);
-    }
-
-    public function benefitEnrollments()
-    {
-        return $this->hasMany(BenefitEnrollment::class);
-    }
-
-    public function leaveRequests()
-    {
-        return $this->hasMany(LeaveRequest::class);
-    }
-
-    public function attendanceRecords()
-    {
-        return $this->hasMany(Attendance::class);
-    }
-
-    public function performanceReviews()
-    {
-        return $this->hasMany(PerformanceReview::class);
-    }
-
-
 }

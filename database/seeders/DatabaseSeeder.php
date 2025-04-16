@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
         \App\Models\User::factory(10)->create();
         $this->call([DepartmentSeeder::class, JobTitleSeeder::class, EmployeeProfileSeeder::class, CompensationSeeder::class, BenefitSeeder::class, BenefitEnrollmentSeeder::class, LeaveRequestSeeder::class, AttendanceSeeder::class, PerformanceReviewSeeder::class,]);
-
+        $this->call([RoleAndAdminSeeder::class,]);
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
